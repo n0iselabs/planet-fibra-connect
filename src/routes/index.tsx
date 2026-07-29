@@ -35,8 +35,6 @@ export const Route = createFileRoute("/")({
         rel: "preload",
         as: "image",
         href: planetHero,
-        // @ts-expect-error fetchpriority is a valid attribute
-        fetchpriority: "high",
       },
     ],
   }),
