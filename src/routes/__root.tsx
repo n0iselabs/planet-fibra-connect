@@ -17,16 +17,16 @@ function NotFoundComponent() {
     <div className="flex min-h-screen items-center justify-center bg-background px-4">
       <div className="max-w-md text-center">
         <h1 className="text-7xl font-bold text-foreground">404</h1>
-        <h2 className="mt-4 text-xl font-semibold text-foreground">Page not found</h2>
+        <h2 className="mt-4 text-xl font-semibold text-foreground">Página não encontrada</h2>
         <p className="mt-2 text-sm text-muted-foreground">
-          The page you're looking for doesn't exist or has been moved.
+          A página que você procura não existe ou foi movida.
         </p>
         <div className="mt-6">
           <Link
             to="/"
-            className="inline-flex items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
+            className="inline-flex items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-[color:var(--primary-hover)]"
           >
-            Go home
+            Voltar para o início
           </Link>
         </div>
       </div>
@@ -45,10 +45,10 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
     <div className="flex min-h-screen items-center justify-center bg-background px-4">
       <div className="max-w-md text-center">
         <h1 className="text-xl font-semibold tracking-tight text-foreground">
-          This page didn't load
+          Algo deu errado
         </h1>
         <p className="mt-2 text-sm text-muted-foreground">
-          Something went wrong on our end. You can try refreshing or head back home.
+          Tente novamente ou volte ao início.
         </p>
         <div className="mt-6 flex flex-wrap justify-center gap-2">
           <button
@@ -56,15 +56,15 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
               router.invalidate();
               reset();
             }}
-            className="inline-flex items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
+            className="inline-flex items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-[color:var(--primary-hover)]"
           >
-            Try again
+            Tentar de novo
           </button>
           <a
             href="/"
             className="inline-flex items-center justify-center rounded-md border border-input bg-background px-4 py-2 text-sm font-medium text-foreground transition-colors hover:bg-accent"
           >
-            Go home
+            Início
           </a>
         </div>
       </div>
@@ -72,26 +72,95 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
   );
 }
 
+const localBusinessJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "InternetServiceProvider",
+  name: "Planet Tel",
+  description:
+    "Provedor de internet de fibra óptica em Rio Grande da Serra, Ribeirão Pires e Mauá.",
+  telephone: "+551148213311",
+  url: "https://planettel.com.br",
+  priceRange: "R$ 79,90–R$ 109,90",
+  address: {
+    "@type": "PostalAddress",
+    streetAddress: "Rua Prefeito Cido Franco, 88",
+    addressLocality: "Rio Grande da Serra",
+    addressRegion: "SP",
+    addressCountry: "BR",
+  },
+  areaServed: [
+    { "@type": "City", name: "Rio Grande da Serra" },
+    { "@type": "City", name: "Ribeirão Pires" },
+    { "@type": "City", name: "Mauá" },
+  ],
+  contactPoint: {
+    "@type": "ContactPoint",
+    telephone: "+5511997196131",
+    contactType: "customer service",
+    availableLanguage: "pt-BR",
+  },
+};
+
 export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()({
   head: () => ({
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Lovable App" },
-      { name: "description", content: "Lovable Generated Project" },
-      { name: "author", content: "Lovable" },
-      { property: "og:title", content: "Lovable App" },
-      { property: "og:description", content: "Lovable Generated Project" },
+      {
+        title:
+          "Planet Tel — Internet de fibra em Rio Grande da Serra, Ribeirão Pires e Mauá",
+      },
+      {
+        name: "description",
+        content:
+          "Internet de fibra com nota 4,8 no Google. Atendimento local em Rio Grande da Serra, Ribeirão Pires e Mauá. Fale no WhatsApp e veja se a fibra chega no seu endereço.",
+      },
+      { name: "theme-color", content: "#0E121F" },
+      {
+        property: "og:title",
+        content:
+          "Planet Tel — Internet de fibra em Rio Grande da Serra, Ribeirão Pires e Mauá",
+      },
+      {
+        property: "og:description",
+        content:
+          "Internet de fibra com nota 4,8 no Google. Atendimento local em Rio Grande da Serra, Ribeirão Pires e Mauá.",
+      },
       { property: "og:type", content: "website" },
-      { name: "twitter:card", content: "summary_large_image" },
-      { name: "twitter:site", content: "@Lovable" },
+      { property: "og:locale", content: "pt_BR" },
+      {
+        name: "twitter:card",
+        content: "summary_large_image",
+      },
+      {
+        name: "twitter:title",
+        content: "Planet Tel — Internet de fibra local",
+      },
+      {
+        name: "twitter:description",
+        content:
+          "Fibra estável, atendimento próximo e nota 4,8 no Google. Fale no WhatsApp.",
+      },
     ],
     links: [
+      { rel: "stylesheet", href: appCss },
+      { rel: "icon", href: "/favicon.ico", type: "image/x-icon" },
+      { rel: "preconnect", href: "https://fonts.googleapis.com" },
+      {
+        rel: "preconnect",
+        href: "https://fonts.gstatic.com",
+        crossOrigin: "anonymous",
+      },
       {
         rel: "stylesheet",
-        href: appCss,
+        href: "https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Montserrat:ital,wght@0,700;0,800;0,900;1,800;1,900&display=swap",
       },
-      { rel: "icon", href: "/favicon.ico", type: "image/x-icon" },
+    ],
+    scripts: [
+      {
+        type: "application/ld+json",
+        children: JSON.stringify(localBusinessJsonLd),
+      },
     ],
   }),
   shellComponent: RootShell,
@@ -102,7 +171,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
 
 function RootShell({ children }: { children: ReactNode }) {
   return (
-    <html lang="en">
+    <html lang="pt-BR">
       <head>
         <HeadContent />
       </head>
@@ -119,7 +188,6 @@ function RootComponent() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
       <Outlet />
     </QueryClientProvider>
   );
