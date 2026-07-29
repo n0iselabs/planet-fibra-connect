@@ -108,23 +108,23 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { name: "viewport", content: "width=device-width, initial-scale=1" },
       {
         title:
-          "Planet Tel — Internet de fibra em Rio Grande da Serra, Ribeirão Pires e Mauá",
+          "Planet— Internet de fibra",
       },
       {
         name: "description",
         content:
-          "Internet de fibra com nota 4,8 no Google. Atendimento local em Rio Grande da Serra, Ribeirão Pires e Mauá. Fale no WhatsApp e veja se a fibra chega no seu endereço.",
+          "Internet de fibra com nota 4,8 no Google. to local em Rio Grande da Serra, Ribeirão Pires e Mauá. Fale no WhatsApp e veja se a fibra chega no seu endereço.",
       },
       { name: "theme-color", content: "#0E121F" },
       {
         property: "og:title",
         content:
-          "Planet Tel — Internet de fibra em Rio Grande da Serra, Ribeirão Pires e Mauá",
+          "Planet— Internet de fibra",
       },
       {
         property: "og:description",
         content:
-          "Internet de fibra com nota 4,8 no Google. Atendimento local em Rio Grande da Serra, Ribeirão Pires e Mauá.",
+          "Internet de fibra com nota 4,8 no Google. to local em Rio Grande da Serra, Ribeirão Pires e Mauá. Fale no WhatsApp e veja se a fibra chega no seu endereço.",
       },
       { property: "og:type", content: "website" },
       { property: "og:locale", content: "pt_BR" },
@@ -134,13 +134,15 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       },
       {
         name: "twitter:title",
-        content: "Planet Tel — Internet de fibra local",
+        content: "Planet— Internet de fibra",
       },
       {
         name: "twitter:description",
         content:
-          "Fibra estável, atendimento próximo e nota 4,8 no Google. Fale no WhatsApp.",
+          "Internet de fibra com nota 4,8 no Google. to local em Rio Grande da Serra, Ribeirão Pires e Mauá. Fale no WhatsApp e veja se a fibra chega no seu endereço.",
       },
+      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/3cf4a8f1-f399-4934-b7f5-aac0db985f51/id-preview-15e4a75c--e798de75-e3da-481f-8447-bedfcfe3f370.lovable.app-1785340125942.png" },
+      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/3cf4a8f1-f399-4934-b7f5-aac0db985f51/id-preview-15e4a75c--e798de75-e3da-481f-8447-bedfcfe3f370.lovable.app-1785340125942.png" },
     ],
     links: [
       { rel: "stylesheet", href: appCss },
