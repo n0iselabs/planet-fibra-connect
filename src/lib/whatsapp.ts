@@ -9,6 +9,8 @@ export const WA_MESSAGES = {
     "Olá! Gostaria de saber se a fibra da Planet Tel atende o meu endereço: ",
   indicacao:
     "Olá! Gostaria de ajuda para escolher o melhor plano para a minha casa.",
+  suporte:
+    "Olá! Sou cliente da Planet Tel e preciso de suporte.",
   plano: (mega: number) =>
     `Olá! Tenho interesse no plano ${mega} Mega. Podem me ajudar?`,
 };

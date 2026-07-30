@@ -58,10 +58,10 @@
   --star: #FFC53D;
   --whatsapp: #25D366;
 
-  --surface: #141417;
-  --surface-2: #1C1C21;
+  --surface: #1B1D24;
+  --surface-2: #262832;
 
-  --card: #141417;
+  --card: #1B1D24;
   --card-foreground: #FFFFFF;
   --popover: #141417;
   --popover-foreground: #FFFFFF;
@@ -99,6 +99,11 @@
 
   html {
     scroll-behavior: smooth;
+  }
+
+  /* evita que âncoras fiquem escondidas atrás do header fixo (h-16) */
+  section[id] {
+    scroll-margin-top: 4.5rem;
   }
 
   body {
@@ -150,6 +155,27 @@
 
 @utility bg-red-glow {
   background: var(--gradient-red-glow);
+}
+
+/* Fundos de seção — profundidade vertical sutil + glow ambiente discreto.
+   Substituem os fills chapados (#0A0A0B / #0E121F) que deixavam as seções
+   "secas". Opacidades propositalmente baixas (premium, sem competir com o
+   conteúdo). Paleta travada: royal (#2A50A8) no topo, vermelho (#A01020)
+   na base. */
+/* Banda ESCURA — base near-black com um brilho royal sutil no topo.
+   Alterna com bg-section-alt para criar ritmo tonal entre as seções. */
+@utility bg-section {
+  background:
+    radial-gradient(90% 55% at 50% 0%, rgba(42, 80, 168, 0.10) 0%, transparent 60%),
+    linear-gradient(180deg, #0C0D12 0%, #0A0A0B 55%, #090909 100%);
+}
+
+/* Banda ELEVADA — charcoal navy perceptivelmente mais clara que o preto,
+   com um brilho quente (vermelho da marca) discreto na base. */
+@utility bg-section-alt {
+  background:
+    radial-gradient(85% 50% at 50% 100%, rgba(160, 16, 32, 0.10) 0%, transparent 60%),
+    linear-gradient(180deg, #16181F 0%, #131520 55%, #0F1118 100%);
 }
 
 @utility shadow-cta {

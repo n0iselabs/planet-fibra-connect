@@ -1,5 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useEffect, useState } from "react";
+import { BrandMark, WaButton } from "@/components/site/ui";
+import { SiteHeader } from "@/components/site/SiteHeader";
+import { SiteFooter } from "@/components/site/SiteFooter";
 import {
   Accordion,
   AccordionContent,
@@ -10,23 +12,25 @@ import {
   ArrowRight,
   Check,
   MapPin,
-  MessageCircle,
-  Phone,
   Router,
   Sparkles,
   Star,
+  Tv,
+  Wifi,
   Wrench,
 } from "lucide-react";
 import { CoverageChecker } from "@/components/site/CoverageChecker";
 import { WhatsAppSticky } from "@/components/site/WhatsAppSticky";
-import {
-  PHONE_DISPLAY,
-  WA_MESSAGES,
-  WHATSAPP_DISPLAY,
-  trackWhatsApp,
-  waLink,
-} from "@/lib/whatsapp";
-import planetHero from "@/assets/planet-hero.png";
+import { WA_MESSAGES, trackWhatsApp, waLink } from "@/lib/whatsapp";
+import planetIcon from "@/assets/planettel-icon.png";
+import heroBackdrop from "@/assets/hero-backdrop.webp";
+import streamingBg from "@/assets/streaming-combo-bg.webp";
+import coberturaBackdrop from "@/assets/cobertura-planet.webp";
+
+// Link para as avaliações no Google Maps (busca pelo perfil da PlanetTel).
+// TODO(cliente): substituir pela URL canônica do perfil Google Business.
+const GOOGLE_REVIEWS_URL =
+  "https://www.google.com/maps/search/?api=1&query=Planet+Tel+Rio+Grande+da+Serra";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -34,7 +38,7 @@ export const Route = createFileRoute("/")({
       {
         rel: "preload",
         as: "image",
-        href: planetHero,
+        href: planetIcon,
       },
     ],
   }),
@@ -42,49 +46,6 @@ export const Route = createFileRoute("/")({
 });
 
 /* ---------------- helpers ---------------- */
-
-function WaButton({
-  message,
-  context,
-  children,
-  variant = "primary",
-  size = "md",
-  className = "",
-}: {
-  message: string;
-  context: string;
-  children: React.ReactNode;
-  variant?: "primary" | "ghost" | "white";
-  size?: "md" | "lg";
-  className?: string;
-}) {
-  const base =
-    "inline-flex items-center justify-center gap-2 font-semibold rounded-xl transition-all whitespace-nowrap";
-  const sizes = {
-    md: "px-5 py-3 text-sm",
-    lg: "px-6 py-4 text-base",
-  };
-  const variants = {
-    primary:
-      "bg-primary text-primary-foreground hover:bg-[color:var(--primary-hover)] hover:-translate-y-0.5 shadow-cta",
-    ghost:
-      "bg-transparent text-white border border-white/20 hover:bg-white/5",
-    white: "bg-white text-night hover:bg-white/90",
-  };
-  return (
-    <a
-      href={waLink(message)}
-      target="_blank"
-      rel="noopener noreferrer"
-      onClick={() => trackWhatsApp(context)}
-      data-cta={`whatsapp-${context}`}
-      className={`${base} ${sizes[size]} ${variants[variant]} ${className}`}
-    >
-      {children}
-      {variant === "primary" && <ArrowRight className="h-4 w-4" />}
-    </a>
-  );
-}
 
 function SectionHeader({
   eyebrow,
@@ -104,7 +65,7 @@ function SectionHeader({
           {eyebrow}
         </div>
       )}
-      <h2 className="text-3xl md:text-4xl lg:text-[40px] text-white">
+      <h2 className="text-2xl md:text-3xl lg:text-[34px] text-white">
         {title}
       </h2>
       {subtitle && (
@@ -116,98 +77,47 @@ function SectionHeader({
   );
 }
 
-/* ---------------- header ---------------- */
-
-function Header() {
-  const [scrolled, setScrolled] = useState(false);
-  useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 12);
-    onScroll();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
-
-  return (
-    <header
-      className={`fixed top-0 inset-x-0 z-40 transition-all ${
-        scrolled
-          ? "bg-night/85 backdrop-blur-md border-b border-white/10"
-          : "bg-transparent"
-      }`}
-    >
-      <div className="mx-auto max-w-6xl px-4 md:px-8 h-16 flex items-center justify-between">
-        <a href="#top" className="flex items-center gap-2 group">
-          <span className="relative inline-flex h-7 w-7 items-center justify-center">
-            <span className="absolute inset-0 rounded-full bg-gradient-to-br from-silver to-[#6b6b76]" />
-            <span className="absolute -inset-1 rounded-full border-2 border-primary rotate-[25deg]" />
-          </span>
-          <span className="font-display font-black text-white text-lg tracking-tight">
-            Planet<span className="text-primary">Tel</span>
-          </span>
-        </a>
-
-        <nav className="hidden md:flex items-center gap-7 text-sm text-white/80">
-          <a href="#planos" className="hover:text-white">Planos</a>
-          <a href="#cobertura" className="hover:text-white">Cobertura</a>
-          <a href="#avaliacoes" className="hover:text-white">Avaliações</a>
-          <a href="#faq" className="hover:text-white">FAQ</a>
-        </nav>
-
-        <WaButton
-          message={WA_MESSAGES.contratar}
-          context="header"
-          size="md"
-          className="!py-2.5"
-        >
-          <MessageCircle className="h-4 w-4" />
-          <span className="hidden sm:inline">Falar no WhatsApp</span>
-          <span className="sm:hidden">WhatsApp</span>
-        </WaButton>
-      </div>
-    </header>
-  );
-}
-
 /* ---------------- hero ---------------- */
 
 function Hero() {
   return (
     <section id="top" className="relative bg-hero overflow-hidden pt-24 pb-16 md:pt-32 md:pb-24">
+      {/* backdrop de fibra óptica (gerado, otimizado) */}
+      <div
+        className="absolute inset-0 bg-cover bg-center opacity-50 pointer-events-none"
+        style={{ backgroundImage: `url(${heroBackdrop})` }}
+      />
+      {/* scrim para garantir leitura do texto sobre a imagem */}
+      <div className="absolute inset-0 bg-gradient-to-r from-night via-night/60 to-transparent pointer-events-none" />
       {/* subtle backdrop */}
       <div className="absolute inset-0 opacity-40 pointer-events-none">
         <div className="absolute -top-32 -right-32 h-[500px] w-[500px] rounded-full bg-royal/40 blur-[120px]" />
         <div className="absolute -bottom-40 -left-32 h-[400px] w-[400px] rounded-full bg-primary/20 blur-[120px]" />
       </div>
 
-      <div className="relative mx-auto max-w-6xl px-4 md:px-8 grid lg:grid-cols-[1.15fr_1fr] gap-10 lg:gap-14 items-center">
+      <div className="relative mx-auto max-w-6xl px-5 md:px-8 grid grid-cols-1 lg:grid-cols-[1.15fr_1fr] gap-10 lg:gap-14 items-start">
         <div className="animate-fade-up">
           <div className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-3 py-1.5 text-xs text-white/90">
             <MapPin className="h-3.5 w-3.5 text-primary" />
             Provedor de fibra óptica em Rio Grande da Serra · Ribeirão Pires · Mauá
           </div>
 
-          <h1 className="mt-5 text-[34px] leading-[1.05] sm:text-5xl lg:text-[60px] font-display font-extrabold text-white tracking-tight">
-            Internet de fibra estável,
-            <br className="hidden sm:block" /> com atendimento próximo —
-            <br className="hidden sm:block" /> e{" "}
-            <span className="text-hero-num text-[40px] sm:text-6xl lg:text-[68px]">
-              4,8
-            </span>{" "}
-            <span className="inline-flex items-center gap-1 text-[color:var(--star)]">
-              <Star className="h-6 w-6 fill-current" />
-            </span>{" "}
-            no Google.
+          <h1 className="mt-5 text-[30px] leading-[1.08] sm:text-[38px] lg:text-[44px] font-display font-extrabold text-white tracking-tight text-balance max-w-xl">
+            Fibra óptica rápida, estável e sem travamentos.
           </h1>
 
           <p className="mt-5 text-base md:text-lg text-white/85 leading-relaxed max-w-xl">
-            Planos de fibra óptica a partir de{" "}
-            <strong className="text-white">R$ 79,90/mês</strong>, com roteador
-            incluso e mensalidade fixa. Informe seu endereço pelo WhatsApp e
-            verifique em instantes se a fibra já atende a sua região.
+            Fibra óptica com baixa latência para chamadas de vídeo, aulas online,
+            jogos e streaming — e suporte de gente da região, que agenda a sua
+            instalação e resolve tudo pelo WhatsApp.
           </p>
 
-          <div className="mt-6 max-w-xl">
-            <CoverageChecker context="cobertura-hero" size="lg" />
+          <div className="mt-7 max-w-xl">
+            <CoverageChecker
+              context="cobertura-hero"
+              size="lg"
+              ctaLabel="Verificar cobertura"
+            />
             <p className="mt-2 text-xs text-white/70">
               Sem compromisso — nossa equipe responde pelo WhatsApp.
             </p>
@@ -223,30 +133,48 @@ function Hero() {
             </a>
           </div>
 
-          <div className="mt-8 flex flex-wrap items-center gap-x-5 gap-y-2 text-xs text-white/80">
-            <span className="inline-flex items-center gap-1.5">
-              <Star className="h-3.5 w-3.5 fill-[color:var(--star)] text-[color:var(--star)]" />
-              <strong className="text-white">4,8</strong> no Google
-            </span>
-            <span className="opacity-40">·</span>
-            <span>214 avaliações</span>
-            <span className="opacity-40">·</span>
-            <span>provedor local das 3 cidades</span>
-            <span className="opacity-40">·</span>
-            <span>atendimento pelo WhatsApp</span>
-          </div>
+          {/* Benefícios rápidos — fatos concretos, sem repetir a prova social */}
+          <ul className="mt-6 flex flex-wrap items-center gap-x-5 gap-y-2 text-sm text-white/80">
+            {[
+              "A partir de R$ 79,90/mês",
+              "Roteador incluso",
+              "Mensalidade fixa",
+              "Equipe local",
+            ].map((b) => (
+              <li key={b} className="flex items-center gap-2">
+                <Check className="h-4 w-4 text-primary shrink-0" />
+                {b}
+              </li>
+            ))}
+          </ul>
         </div>
 
-        <div className="relative flex justify-center lg:justify-end animate-fade-up">
-          <div className="relative">
-            <div className="absolute inset-0 rounded-full bg-primary/25 blur-3xl" />
-            <img
-              src={planetHero}
-              alt="Símbolo Planet Tel — planeta metálico com anel vermelho"
-              width={520}
-              height={520}
-              className="relative w-[280px] sm:w-[380px] lg:w-[480px] h-auto drop-shadow-[0_20px_60px_rgba(160,16,32,0.35)]"
-            />
+        <div className="relative animate-fade-up">
+          <div className="absolute -inset-6 rounded-[2.5rem] bg-primary/15 blur-3xl pointer-events-none" />
+          <div className="relative rounded-3xl border border-white/10 bg-white/[0.06] backdrop-blur-xl p-6 sm:p-8 shadow-card-soft">
+            <BrandMark iconClassName="h-9 w-auto" textClassName="text-xl" />
+
+            <p className="mt-6 text-xs font-semibold uppercase tracking-[0.18em] text-primary">
+              Cobertura ativa
+            </p>
+            <p className="mt-2 text-lg text-white/90 leading-relaxed">
+              A fibra óptica da Planet já chegou às três cidades que atendemos:
+            </p>
+
+            <ul className="mt-5 space-y-2.5">
+              {["Rio Grande da Serra", "Ribeirão Pires", "Mauá"].map((city) => (
+                <li
+                  key={city}
+                  className="flex items-center gap-3 rounded-xl bg-white/[0.05] border border-white/5 px-4 py-3"
+                >
+                  <span className="inline-flex h-8 w-8 items-center justify-center rounded-lg bg-primary/15 text-primary shrink-0">
+                    <MapPin className="h-4 w-4" />
+                  </span>
+                  <span className="text-white font-medium">{city}</span>
+                  <span className="ml-auto text-xs text-white/60">fibra ativa</span>
+                </li>
+              ))}
+            </ul>
           </div>
         </div>
       </div>
@@ -275,9 +203,9 @@ function Trust() {
     },
   ];
   return (
-    <section className="bg-background border-y border-white/5">
-      <div className="mx-auto max-w-6xl px-4 md:px-8 py-16 md:py-20">
-        <div className="grid lg:grid-cols-[1fr_1.4fr] gap-10 lg:gap-16 items-center">
+    <section className="bg-section border-y border-white/5">
+      <div className="mx-auto max-w-6xl px-5 md:px-8 py-20 md:py-28">
+        <div className="grid grid-cols-1 lg:grid-cols-[1fr_1.4fr] gap-10 lg:gap-16 items-center">
           <div>
             <div className="inline-flex items-center gap-2 text-[color:var(--star)] mb-3">
               {Array.from({ length: 5 }).map((_, i) => (
@@ -307,9 +235,9 @@ function Trust() {
             {chips.map((c) => (
               <li
                 key={c.title}
-                className="rounded-2xl bg-surface border border-white/5 p-5 hover:bg-surface-2 transition-colors"
+                className="rounded-2xl bg-surface border border-white/5 p-5 transition-all duration-300 hover:bg-surface-2 hover:-translate-y-1 hover:border-white/10 hover:shadow-card-soft"
               >
-                <div className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-primary/15 text-primary mb-3">
+                <div className="inline-flex h-11 w-11 items-center justify-center rounded-xl bg-primary/15 text-primary ring-1 ring-inset ring-primary/20 mb-4">
                   <c.icon className="h-5 w-5" />
                 </div>
                 <div className="font-display font-bold text-white">
@@ -375,8 +303,8 @@ function Plans() {
   const mobileOrder = [PLANS[1], PLANS[0], PLANS[2], PLANS[3]];
 
   return (
-    <section id="planos" className="bg-[color:var(--night)]">
-      <div className="mx-auto max-w-6xl px-4 md:px-8 py-16 md:py-24">
+    <section id="planos" className="bg-section-alt">
+      <div className="mx-auto max-w-6xl px-5 md:px-8 py-20 md:py-28">
         <SectionHeader
           eyebrow="Planos"
           title="Escolha o plano ideal para a sua casa"
@@ -426,10 +354,10 @@ function PlanCard({ plan }: { plan: Plan }) {
   const highlight = plan.highlight;
   return (
     <div
-      className={`relative rounded-2xl p-6 flex flex-col ${
+      className={`relative rounded-2xl p-6 flex flex-col duration-300 ${
         highlight
           ? "bg-surface-2 border-2 border-primary lg:-translate-y-3 shadow-cta"
-          : "bg-surface border border-white/8 hover:border-white/15"
+          : "bg-surface border border-white/8 hover:border-white/15 hover:-translate-y-1 hover:shadow-card-soft"
       } transition-all`}
     >
       {plan.badge && (
@@ -484,6 +412,77 @@ function PlanCard({ plan }: { plan: Plan }) {
   );
 }
 
+/* ---------------- streaming combo ---------------- */
+
+function StreamingCombo() {
+  const includes = [
+    { icon: Wifi, text: "700 Mega de fibra óptica" },
+    { icon: Router, text: "Roteador Wi-Fi 6 incluso" },
+    { icon: Tv, text: "Max ou Disney+ incluso" },
+    { icon: Check, text: "Mensalidade fixa de R$ 109,90" },
+  ];
+  return (
+    <section className="relative overflow-hidden bg-night">
+      {/* Background: parede de conteúdo de streaming (Max/Disney+) */}
+      <div
+        className="absolute inset-0 bg-cover bg-center"
+        style={{ backgroundImage: `url(${streamingBg})` }}
+        aria-hidden="true"
+      />
+      {/* Scrims: escurece a esquerda (onde vai o texto) e a base, mantendo a
+          parede de conteúdo visível à direita. */}
+      <div className="absolute inset-0 bg-gradient-to-r from-night via-night/85 to-night/45 lg:to-night/25 pointer-events-none" />
+      <div className="absolute inset-0 bg-gradient-to-t from-night via-night/40 to-night/20 pointer-events-none" />
+
+      <div className="relative mx-auto max-w-6xl px-5 md:px-8 py-24 md:py-32">
+        <div className="max-w-xl">
+          <div className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/10 px-3 py-1.5 text-xs font-semibold uppercase tracking-[0.14em] text-primary backdrop-blur">
+            <Sparkles className="h-3.5 w-3.5" />
+            Combo fibra + streaming
+          </div>
+          <h2 className="mt-5 text-2xl md:text-3xl lg:text-[34px] font-display font-bold text-white text-balance">
+            No plano 700 Mega, a sua fibra já vem com streaming incluso
+          </h2>
+          <p className="mt-4 text-base md:text-lg text-white/85 leading-relaxed">
+            Escolha <strong className="text-white">Max</strong> ou{" "}
+            <strong className="text-white">Disney+</strong> e assista aos seus
+            filmes e séries na mesma conta da sua internet — com Wi-Fi 6 e
+            mensalidade fixa, sem surpresa no fim do mês.
+          </p>
+
+          <ul className="mt-6 grid gap-3 sm:grid-cols-2">
+            {includes.map((item) => (
+              <li
+                key={item.text}
+                className="flex items-center gap-3 rounded-xl border border-white/10 bg-night/60 px-4 py-3 backdrop-blur-sm"
+              >
+                <span className="inline-flex h-8 w-8 items-center justify-center rounded-lg bg-primary/20 text-primary shrink-0">
+                  <item.icon className="h-4 w-4" />
+                </span>
+                <span className="text-sm text-white/90">{item.text}</span>
+              </li>
+            ))}
+          </ul>
+
+          <div className="mt-7">
+            <WaButton
+              message={WA_MESSAGES.plano(700)}
+              context="streaming-700"
+              size="lg"
+              className="max-w-full whitespace-normal! text-center"
+            >
+              Quero o 700 Mega com streaming
+            </WaButton>
+            <p className="mt-3 text-xs text-white/70">
+              Benefício de streaming (Max ou Disney+) exclusivo do plano 700 Mega.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
 /* ---------------- how it works ---------------- */
 
 function HowItWorks() {
@@ -505,8 +504,8 @@ function HowItWorks() {
     },
   ];
   return (
-    <section className="bg-background">
-      <div className="mx-auto max-w-6xl px-4 md:px-8 py-16 md:py-24">
+    <section className="bg-section-alt">
+      <div className="mx-auto max-w-6xl px-5 md:px-8 py-20 md:py-28">
         <SectionHeader
           eyebrow="Como funciona"
           title="Contratar é simples — e você resolve tudo pelo WhatsApp"
@@ -516,9 +515,11 @@ function HowItWorks() {
           {steps.map((s) => (
             <li
               key={s.n}
-              className="rounded-2xl bg-surface border border-white/8 p-6"
+              className="rounded-2xl bg-surface border border-white/8 p-6 transition-all duration-300 hover:border-white/15 hover:-translate-y-1 hover:shadow-card-soft"
             >
-              <div className="text-hero-num text-4xl">{s.n}</div>
+              <div className="inline-flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10 ring-1 ring-inset ring-primary/20 text-hero-num text-3xl">
+                {s.n}
+              </div>
               <h3 className="mt-3 text-xl text-white font-display font-bold">
                 {s.title}
               </h3>
@@ -533,6 +534,7 @@ function HowItWorks() {
             message={WA_MESSAGES.contratar}
             context="como-funciona"
             size="lg"
+            className="max-w-full whitespace-normal! text-center"
           >
             Falar com a Planet no WhatsApp
           </WaButton>
@@ -576,8 +578,8 @@ const TESTIMONIALS = [
 
 function Testimonials() {
   return (
-    <section id="avaliacoes" className="bg-[color:var(--night)]">
-      <div className="mx-auto max-w-6xl px-4 md:px-8 py-16 md:py-24">
+    <section id="avaliacoes" className="bg-section">
+      <div className="mx-auto max-w-6xl px-5 md:px-8 py-20 md:py-28">
         <SectionHeader
           eyebrow="Depoimentos"
           title="Quem é da região recomenda"
@@ -589,7 +591,7 @@ function Testimonials() {
           {TESTIMONIALS.map((t) => (
             <article
               key={t.name}
-              className="rounded-2xl bg-surface border border-white/8 p-6 flex flex-col"
+              className="rounded-2xl bg-surface border border-white/8 p-6 flex flex-col transition-all duration-300 hover:border-white/15 hover:-translate-y-1 hover:shadow-card-soft"
             >
               <div className="flex items-center gap-1 text-[color:var(--star)] mb-3">
                 {Array.from({ length: 5 }).map((_, i) => (
@@ -617,11 +619,14 @@ function Testimonials() {
             message={WA_MESSAGES.contratar}
             context="depoimentos"
             size="lg"
+            className="max-w-full whitespace-normal! text-center"
           >
             Falar com a nossa equipe no WhatsApp
           </WaButton>
           <a
-            href="#"
+            href={GOOGLE_REVIEWS_URL}
+            target="_blank"
+            rel="noopener noreferrer"
             className="text-sm text-white/70 hover:text-white underline underline-offset-4"
           >
             Ver todas as avaliações no Google
@@ -647,9 +652,15 @@ function GoogleGlyph({ className = "" }: { className?: string }) {
 
 function Coverage() {
   return (
-    <section id="cobertura" className="bg-background">
-      <div className="mx-auto max-w-6xl px-4 md:px-8 py-16 md:py-24">
-        <div className="grid lg:grid-cols-2 gap-10 lg:gap-16 items-start">
+    <section id="cobertura" className="relative bg-background overflow-hidden">
+      {/* fundo de cobertura — fibra chegando ao bairro (gerado, otimizado) */}
+      <div
+        className="absolute inset-0 bg-cover bg-center opacity-40 pointer-events-none"
+        style={{ backgroundImage: `url(${coberturaBackdrop})` }}
+      />
+      <div className="absolute inset-0 bg-gradient-to-r from-background via-background/75 to-background/30 pointer-events-none" />
+      <div className="relative mx-auto max-w-6xl px-5 md:px-8 py-20 md:py-28">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-start">
           <div>
             <SectionHeader
               eyebrow="Cobertura"
@@ -737,8 +748,8 @@ const FAQ = [
 
 function Faq() {
   return (
-    <section id="faq" className="bg-[color:var(--night)]">
-      <div className="mx-auto max-w-3xl px-4 md:px-8 py-16 md:py-24">
+    <section id="faq" className="bg-section-alt">
+      <div className="mx-auto max-w-3xl px-5 md:px-8 py-20 md:py-28">
         <SectionHeader eyebrow="FAQ" title="Perguntas frequentes" center />
         <Accordion type="single" collapsible className="mt-10">
           {FAQ.map((item, i) => (
@@ -761,6 +772,7 @@ function Faq() {
             message={WA_MESSAGES.contratar}
             context="faq"
             variant="ghost"
+            className="max-w-full whitespace-normal! text-center"
           >
             Ainda tem dúvidas? Fale com a Planet
           </WaButton>
@@ -774,8 +786,8 @@ function Faq() {
 
 function FinalCta() {
   return (
-    <section className="bg-background">
-      <div className="mx-auto max-w-5xl px-4 md:px-8 py-16 md:py-24">
+    <section className="bg-section">
+      <div className="mx-auto max-w-5xl px-5 md:px-8 py-20 md:py-28">
         <div className="relative rounded-3xl bg-hero border border-white/10 p-8 md:p-14 overflow-hidden text-center">
           <div className="absolute inset-0 bg-red-glow pointer-events-none" />
           <div className="relative">
@@ -793,7 +805,7 @@ function FinalCta() {
                 message={WA_MESSAGES.contratar}
                 context="cta-final"
                 size="lg"
-                className="!text-base md:!text-lg !px-8 !py-5"
+                className="!text-base md:!text-lg !px-8 !py-5 max-w-full whitespace-normal! text-center"
               >
                 Falar no WhatsApp agora
               </WaButton>
@@ -817,109 +829,17 @@ function FinalCta() {
   );
 }
 
-/* ---------------- footer ---------------- */
-
-function SiteFooter() {
-  return (
-    <footer className="bg-[#08080A] border-t border-white/5">
-      <div className="mx-auto max-w-6xl px-4 md:px-8 py-12 pb-24 md:pb-12">
-        <div className="grid md:grid-cols-[1.2fr_1fr_1fr] gap-10">
-          <div>
-            <div className="flex items-center gap-2">
-              <span className="relative inline-flex h-7 w-7 items-center justify-center">
-                <span className="absolute inset-0 rounded-full bg-gradient-to-br from-silver to-[#6b6b76]" />
-                <span className="absolute -inset-1 rounded-full border-2 border-primary rotate-[25deg]" />
-              </span>
-              <span className="font-display font-black text-white text-lg">
-                Planet<span className="text-primary">Tel</span>
-              </span>
-            </div>
-            <p className="mt-4 text-muted-foreground text-sm max-w-xs">
-              Planet Tel — Conecta você ao que importa.
-            </p>
-            <div className="mt-5">
-              <WaButton
-                message={WA_MESSAGES.contratar}
-                context="footer"
-                size="md"
-              >
-                <MessageCircle className="h-4 w-4" />
-                Falar no WhatsApp
-              </WaButton>
-            </div>
-          </div>
-
-          <div>
-            <div className="text-xs uppercase tracking-widest text-white/60 font-semibold">
-              Contato
-            </div>
-            <ul className="mt-4 space-y-3 text-sm text-white/85">
-              <li className="flex items-start gap-2">
-                <MessageCircle className="h-4 w-4 text-primary mt-0.5" />
-                WhatsApp {WHATSAPP_DISPLAY}
-              </li>
-              <li className="flex items-start gap-2">
-                <Phone className="h-4 w-4 text-primary mt-0.5" />
-                Telefone {PHONE_DISPLAY}
-              </li>
-              <li className="flex items-start gap-2">
-                <MapPin className="h-4 w-4 text-primary mt-0.5" />
-                <span>
-                  Rua Prefeito Cido Franco, 88 — Centro, Rio Grande da Serra/SP
-                </span>
-              </li>
-            </ul>
-          </div>
-
-          <div>
-            <div className="text-xs uppercase tracking-widest text-white/60 font-semibold">
-              Navegação
-            </div>
-            <ul className="mt-4 space-y-2 text-sm text-white/85">
-              <li><a href="#planos" className="hover:text-white">Planos</a></li>
-              <li><a href="#cobertura" className="hover:text-white">Cobertura</a></li>
-              <li><a href="#avaliacoes" className="hover:text-white">Avaliações</a></li>
-              <li>
-                <a
-                  href={waLink(WA_MESSAGES.contratar)}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  onClick={() => trackWhatsApp("footer-nav")}
-                  data-cta="whatsapp-footer-nav"
-                  className="hover:text-white"
-                >
-                  Fale no WhatsApp
-                </a>
-              </li>
-            </ul>
-            <div className="mt-6 text-xs uppercase tracking-widest text-white/60 font-semibold">
-              Cidades atendidas
-            </div>
-            <p className="mt-3 text-sm text-white/85">
-              Rio Grande da Serra · Ribeirão Pires · Mauá
-            </p>
-          </div>
-        </div>
-
-        <div className="mt-10 pt-6 border-t border-white/5 text-xs text-muted-foreground flex flex-wrap items-center justify-between gap-2">
-          <span>© {new Date().getFullYear()} Planet Tel. Todos os direitos reservados.</span>
-          <span>Provedor local de fibra óptica.</span>
-        </div>
-      </div>
-    </footer>
-  );
-}
-
 /* ---------------- page ---------------- */
 
 function PlanetTelLanding() {
   return (
     <div className="min-h-screen bg-background text-foreground">
-      <Header />
+      <SiteHeader />
       <main>
         <Hero />
         <Trust />
         <Plans />
+        <StreamingCombo />
         <HowItWorks />
         <Testimonials />
         <Coverage />

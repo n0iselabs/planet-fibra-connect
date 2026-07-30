@@ -11,6 +11,7 @@ import { useEffect, type ReactNode } from "react";
 
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
+import { CookieConsent } from "@/components/site/CookieConsent";
 
 function NotFoundComponent() {
   return (
@@ -86,6 +87,7 @@ const localBusinessJsonLd = {
     streetAddress: "Rua Prefeito Cido Franco, 88",
     addressLocality: "Rio Grande da Serra",
     addressRegion: "SP",
+    postalCode: "09450-000",
     addressCountry: "BR",
   },
   areaServed: [
@@ -101,52 +103,39 @@ const localBusinessJsonLd = {
   },
 };
 
+// TODO(deploy): confirmar o domínio final do novo site. Enquanto pendente,
+// URLs absolutas (og:image) usam planettel.com.br para bater com o JSON-LD.
+const SITE_URL = "https://planettel.com.br";
+const SITE_TITLE =
+  "PlanetTel — Internet de fibra em Rio Grande da Serra, Ribeirão Pires e Mauá";
+const SITE_DESC =
+  "Internet de fibra óptica com nota 4,8 no Google e atendimento local em Rio Grande da Serra, Ribeirão Pires e Mauá. Planos a partir de R$ 79,90/mês com roteador incluso. Fale no WhatsApp e veja se a fibra chega no seu endereço.";
+const SITE_OG_IMAGE = `${SITE_URL}/og-image.jpg`;
+
 export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()({
   head: () => ({
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      {
-        title:
-          "Planet— Internet de fibra",
-      },
-      {
-        name: "description",
-        content:
-          "Internet de fibra com nota 4,8 no Google. to local em Rio Grande da Serra, Ribeirão Pires e Mauá. Fale no WhatsApp e veja se a fibra chega no seu endereço.",
-      },
+      { title: SITE_TITLE },
+      { name: "description", content: SITE_DESC },
       { name: "theme-color", content: "#0E121F" },
-      {
-        property: "og:title",
-        content:
-          "Planet— Internet de fibra",
-      },
-      {
-        property: "og:description",
-        content:
-          "Internet de fibra com nota 4,8 no Google. to local em Rio Grande da Serra, Ribeirão Pires e Mauá. Fale no WhatsApp e veja se a fibra chega no seu endereço.",
-      },
+      { property: "og:title", content: SITE_TITLE },
+      { property: "og:description", content: SITE_DESC },
       { property: "og:type", content: "website" },
       { property: "og:locale", content: "pt_BR" },
-      {
-        name: "twitter:card",
-        content: "summary_large_image",
-      },
-      {
-        name: "twitter:title",
-        content: "Planet— Internet de fibra",
-      },
-      {
-        name: "twitter:description",
-        content:
-          "Internet de fibra com nota 4,8 no Google. to local em Rio Grande da Serra, Ribeirão Pires e Mauá. Fale no WhatsApp e veja se a fibra chega no seu endereço.",
-      },
-      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/3cf4a8f1-f399-4934-b7f5-aac0db985f51/id-preview-15e4a75c--e798de75-e3da-481f-8447-bedfcfe3f370.lovable.app-1785340125942.png" },
-      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/3cf4a8f1-f399-4934-b7f5-aac0db985f51/id-preview-15e4a75c--e798de75-e3da-481f-8447-bedfcfe3f370.lovable.app-1785340125942.png" },
+      { property: "og:url", content: SITE_URL },
+      { property: "og:image", content: SITE_OG_IMAGE },
+      { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:title", content: SITE_TITLE },
+      { name: "twitter:description", content: SITE_DESC },
+      { name: "twitter:image", content: SITE_OG_IMAGE },
     ],
     links: [
       { rel: "stylesheet", href: appCss },
-      { rel: "icon", href: "/favicon.ico", type: "image/x-icon" },
+      { rel: "icon", href: "/favicon.ico", type: "image/x-icon", sizes: "any" },
+      { rel: "icon", href: "/planettel-icon.png", type: "image/png" },
+      { rel: "apple-touch-icon", href: "/planettel-icon.png" },
       { rel: "preconnect", href: "https://fonts.googleapis.com" },
       {
         rel: "preconnect",
@@ -191,6 +180,7 @@ function RootComponent() {
   return (
     <QueryClientProvider client={queryClient}>
       <Outlet />
+      <CookieConsent />
     </QueryClientProvider>
   );
 }

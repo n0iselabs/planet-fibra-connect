@@ -43,12 +43,12 @@ export function CoverageChecker({
         onChange={(e) => setValue(e.target.value)}
         placeholder="Digite seu endereço ou bairro"
         autoComplete="street-address"
-        className={`flex-1 bg-transparent text-white placeholder:text-muted-foreground rounded-xl ${pad} text-base outline-none focus:ring-2 focus:ring-primary/60`}
+        className={`flex-1 min-w-0 bg-transparent text-white placeholder:text-muted-foreground rounded-xl ${pad} text-base outline-none focus:ring-2 focus:ring-primary/60`}
       />
       <button
         type="submit"
         data-cta={`whatsapp-${context}`}
-        className={`inline-flex items-center justify-center gap-2 rounded-xl bg-primary text-primary-foreground font-semibold ${btnPad} transition-all hover:bg-[color:var(--primary-hover)] hover:-translate-y-0.5 shadow-cta whitespace-nowrap`}
+        className={`inline-flex shrink-0 items-center justify-center gap-2 rounded-xl bg-primary text-primary-foreground font-semibold ${btnPad} transition-all hover:bg-[color:var(--primary-hover)] hover:-translate-y-0.5 shadow-cta whitespace-nowrap`}
       >
         {ctaLabel}
         <ArrowRight className="h-4 w-4" />
