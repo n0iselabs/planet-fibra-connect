@@ -1,9 +1,18 @@
 // Helpers de SEO compartilhados entre as rotas.
 //
-// TODO(deploy): confirmar o domínio final do novo site. Enquanto pendente,
-// todas as URLs absolutas (canonical, og:url, og:image, JSON-LD) usam
-// planettel.com.br — trocar aqui num único lugar quando o domínio for definido.
-export const SITE_URL = "https://planettel.com.br";
+// SITE_URL vem de VITE_SITE_URL (setável no Vercel/host); default = URL de
+// apresentação no Vercel. Ao migrar para o domínio real, defina VITE_SITE_URL
+// no host (ou troque o default) — canonical/og/JSON-LD seguem junto num lugar só.
+const ENV = import.meta.env as unknown as Record<string, string | undefined>;
+
+export const SITE_URL = ENV.VITE_SITE_URL ?? "https://planettel.vercel.app";
+
+/**
+ * true em URLs de preview (vercel.app): dispara o noindex global da
+ * apresentação. Ao apontar SITE_URL para o domínio real, vira false
+ * automaticamente e o site passa a ser indexável.
+ */
+export const IS_PREVIEW = SITE_URL.includes("vercel.app");
 
 /** `<link rel="canonical">` auto-referente para a rota informada (path começa com "/"). */
 export const canonical = (path: string) => ({

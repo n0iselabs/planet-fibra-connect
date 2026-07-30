@@ -12,7 +12,7 @@ import { useEffect, type ReactNode } from "react";
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 import { CookieConsent } from "@/components/site/CookieConsent";
-import { SITE_URL } from "@/lib/seo";
+import { SITE_URL, IS_PREVIEW, NOINDEX } from "@/lib/seo";
 
 function NotFoundComponent() {
   return (
@@ -81,7 +81,7 @@ const localBusinessJsonLd = {
   description:
     "Provedor de internet de fibra óptica em Rio Grande da Serra, Ribeirão Pires e Mauá.",
   telephone: "+551148213311",
-  url: "https://planettel.com.br",
+  url: SITE_URL,
   priceRange: "R$ 79,90–R$ 109,90",
   address: {
     "@type": "PostalAddress",
@@ -128,6 +128,8 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { name: "twitter:title", content: SITE_TITLE },
       { name: "twitter:description", content: SITE_DESC },
       { name: "twitter:image", content: SITE_OG_IMAGE },
+      // Apresentação em preview (vercel.app): fora do índice do Google até o domínio real.
+      ...(IS_PREVIEW ? [NOINDEX] : []),
     ],
     links: [
       { rel: "stylesheet", href: appCss },
