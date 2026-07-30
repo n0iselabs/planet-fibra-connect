@@ -1,6 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { PageShell, Todo } from "@/components/site/PageShell";
 import { COMPANY } from "@/lib/company";
+import { NOINDEX } from "@/lib/seo";
 
 export const Route = createFileRoute("/politica-de-privacidade")({
   head: () => ({
@@ -11,6 +12,7 @@ export const Route = createFileRoute("/politica-de-privacidade")({
         content:
           "Como a Planet Tel coleta, usa e protege os seus dados pessoais, em conformidade com a LGPD.",
       },
+      NOINDEX,
     ],
   }),
   component: PrivacidadePage,

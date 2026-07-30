@@ -3,10 +3,11 @@ import { useState } from "react";
 import { ArrowLeft, Check, Copy, Download, QrCode, Receipt } from "lucide-react";
 import { PortalHeader } from "@/components/site/PortalHeader";
 import { FATURAS, PIX_CODE } from "@/lib/mock-portal";
+import { NOINDEX } from "@/lib/seo";
 
 export const Route = createFileRoute("/faturas")({
   head: () => ({
-    meta: [{ title: "Faturas — Área do Cliente | Planet Tel" }],
+    meta: [{ title: "Faturas — Área do Cliente | Planet Tel" }, NOINDEX],
   }),
   component: FaturasPage,
 });

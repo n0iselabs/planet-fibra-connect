@@ -3,6 +3,7 @@ import { PageShell } from "@/components/site/PageShell";
 import { WaButton } from "@/components/site/ui";
 import { COMPANY } from "@/lib/company";
 import { WA_MESSAGES } from "@/lib/whatsapp";
+import { canonical } from "@/lib/seo";
 
 export const Route = createFileRoute("/sobre")({
   head: () => ({
@@ -14,6 +15,7 @@ export const Route = createFileRoute("/sobre")({
           "A Planet Tel é um provedor local de fibra óptica em Rio Grande da Serra, Ribeirão Pires e Mauá, com atendimento de gente da região e nota 4,8 no Google.",
       },
     ],
+    links: [canonical("/sobre")],
   }),
   component: SobrePage,
 });

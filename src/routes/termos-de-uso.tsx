@@ -1,6 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { PageShell, Todo } from "@/components/site/PageShell";
 import { COMPANY } from "@/lib/company";
+import { NOINDEX } from "@/lib/seo";
 
 export const Route = createFileRoute("/termos-de-uso")({
   head: () => ({
@@ -11,6 +12,7 @@ export const Route = createFileRoute("/termos-de-uso")({
         content:
           "Termos e condições de uso do site institucional da Planet Tel.",
       },
+      NOINDEX,
     ],
   }),
   component: TermosPage,

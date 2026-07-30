@@ -17,6 +17,7 @@ import { SiteHeader } from "@/components/site/SiteHeader";
 import { SiteFooter } from "@/components/site/SiteFooter";
 import { BrandMark } from "@/components/site/ui";
 import { WA_MESSAGES, trackWhatsApp, waLink } from "@/lib/whatsapp";
+import { NOINDEX } from "@/lib/seo";
 
 export const Route = createFileRoute("/area-do-cliente")({
   head: () => ({
@@ -27,6 +28,7 @@ export const Route = createFileRoute("/area-do-cliente")({
         content:
           "Acesse a Área do Cliente da Planet Tel: faturas, 2ª via, seu plano e suporte em um só lugar.",
       },
+      NOINDEX,
     ],
   }),
   component: AreaClientePage,

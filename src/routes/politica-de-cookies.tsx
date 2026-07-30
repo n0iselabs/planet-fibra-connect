@@ -1,5 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { PageShell, Todo } from "@/components/site/PageShell";
+import { NOINDEX } from "@/lib/seo";
 
 export const Route = createFileRoute("/politica-de-cookies")({
   head: () => ({
@@ -10,6 +11,7 @@ export const Route = createFileRoute("/politica-de-cookies")({
         content:
           "O que são cookies, quais utilizamos no site da Planet Tel e como você pode gerenciá-los.",
       },
+      NOINDEX,
     ],
   }),
   component: CookiesPage,

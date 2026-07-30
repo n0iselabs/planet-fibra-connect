@@ -4,6 +4,7 @@ import { PageShell } from "@/components/site/PageShell";
 import { WaButton } from "@/components/site/ui";
 import { COMPANY } from "@/lib/company";
 import { PHONE_DISPLAY, WA_MESSAGES, WHATSAPP_DISPLAY } from "@/lib/whatsapp";
+import { canonical } from "@/lib/seo";
 
 const MAPS_QUERY = encodeURIComponent(
   "Rua Prefeito Cido Franco, 88 - Centro, Rio Grande da Serra - SP",
@@ -21,6 +22,7 @@ export const Route = createFileRoute("/contato")({
           "Fale com a Planet Tel: WhatsApp, telefone, endereço e horário de atendimento em Rio Grande da Serra.",
       },
     ],
+    links: [canonical("/contato")],
   }),
   component: ContatoPage,
 });

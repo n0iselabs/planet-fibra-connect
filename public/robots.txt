@@ -12,3 +12,9 @@ Allow: /
 
 User-agent: *
 Allow: /
+
+# Portal (dados fictícios) e páginas legais em rascunho usam noindex no HTML.
+# Não bloqueamos por robots aqui de propósito: o crawler precisa acessar a
+# página para ler o noindex e removê-la do índice.
+
+Sitemap: https://planettel.com.br/sitemap.xml

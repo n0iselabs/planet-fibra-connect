@@ -17,10 +17,11 @@ import {
 import { GreenDot, PortalHeader } from "@/components/site/PortalHeader";
 import { WA_MESSAGES, trackWhatsApp, waLink } from "@/lib/whatsapp";
 import { CLIENTE, FATURAS, PIX_CODE, PROXIMA_FATURA } from "@/lib/mock-portal";
+import { NOINDEX } from "@/lib/seo";
 
 export const Route = createFileRoute("/painel")({
   head: () => ({
-    meta: [{ title: "Painel — Área do Cliente | Planet Tel" }],
+    meta: [{ title: "Painel — Área do Cliente | Planet Tel" }, NOINDEX],
   }),
   component: PainelPage,
 });

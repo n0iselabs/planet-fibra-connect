@@ -22,7 +22,7 @@ import {
 import { CoverageChecker } from "@/components/site/CoverageChecker";
 import { WhatsAppSticky } from "@/components/site/WhatsAppSticky";
 import { WA_MESSAGES, trackWhatsApp, waLink } from "@/lib/whatsapp";
-import planetIcon from "@/assets/planettel-icon.png";
+import { canonical } from "@/lib/seo";
 import heroBackdrop from "@/assets/hero-backdrop.webp";
 import streamingBg from "@/assets/streaming-combo-bg.webp";
 import coberturaBackdrop from "@/assets/cobertura-planet.webp";
@@ -34,13 +34,7 @@ const GOOGLE_REVIEWS_URL =
 
 export const Route = createFileRoute("/")({
   head: () => ({
-    links: [
-      {
-        rel: "preload",
-        as: "image",
-        href: planetIcon,
-      },
-    ],
+    links: [canonical("/")],
   }),
   component: PlanetTelLanding,
 });
@@ -103,8 +97,19 @@ function Hero() {
           </div>
 
           <h1 className="mt-5 text-[30px] leading-[1.08] sm:text-[38px] lg:text-[44px] font-display font-extrabold text-white tracking-tight text-balance max-w-xl">
-            Fibra óptica rápida, estável e sem travamentos.
+            Internet de fibra óptica da sua região — nota 4,8 no Google.
           </h1>
+
+          {/* Prova social na primeira dobra: o maior ativo de confiança da marca */}
+          <div className="mt-4 inline-flex items-center gap-2 text-sm">
+            <span className="inline-flex items-center gap-1 text-[color:var(--star)] font-semibold">
+              <Star className="h-4 w-4 fill-current" />
+              4,8
+            </span>
+            <span className="text-white/75">
+              no Google · <strong className="text-white/90">214 avaliações</strong> · provedor local
+            </span>
+          </div>
 
           <p className="mt-5 text-base md:text-lg text-white/85 leading-relaxed max-w-xl">
             Fibra óptica com baixa latência para chamadas de vídeo, aulas online,

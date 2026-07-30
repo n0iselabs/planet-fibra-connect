@@ -12,6 +12,7 @@ import { useEffect, type ReactNode } from "react";
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 import { CookieConsent } from "@/components/site/CookieConsent";
+import { SITE_URL } from "@/lib/seo";
 
 function NotFoundComponent() {
   return (
@@ -103,9 +104,6 @@ const localBusinessJsonLd = {
   },
 };
 
-// TODO(deploy): confirmar o domínio final do novo site. Enquanto pendente,
-// URLs absolutas (og:image) usam planettel.com.br para bater com o JSON-LD.
-const SITE_URL = "https://planettel.com.br";
 const SITE_TITLE =
   "PlanetTel — Internet de fibra em Rio Grande da Serra, Ribeirão Pires e Mauá";
 const SITE_DESC =

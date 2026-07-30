@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { CheckCircle2 } from "lucide-react";
 import { PageShell } from "@/components/site/PageShell";
+import { NOINDEX } from "@/lib/seo";
 
 export const Route = createFileRoute("/status")({
   head: () => ({
@@ -11,6 +12,7 @@ export const Route = createFileRoute("/status")({
         content:
           "Acompanhe o status da rede de fibra da Planet Tel nas cidades atendidas.",
       },
+      NOINDEX,
     ],
   }),
   component: StatusPage,
